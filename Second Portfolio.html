@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shaik Iliyas | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #222222;
+      --primary-color: #6c63ff;
+      --secondary-color: #f0f0f0;
+      --toggle-bg: #e0e0e0;
+      --toggle-fg: #ffffff;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #f0f0f0;
+      --primary-color: #bb86fc;
+      --secondary-color: #1e1e1e;
+      --toggle-bg: #3d3d3d;
+      --toggle-fg: #121212;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.4s ease, color 0.4s ease;
+      line-height: 1.6;
+    }
+
+    /* Sliding Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 25px;
+      right: 25px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle-container {
+      position: relative;
+      width: 60px;
+      height: 30px;
+    }
+
+    .toggle-input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--toggle-bg);
+      border-radius: 34px;
+      transition: .4s;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
+      background-color: var(--toggle-fg);
+      border-radius: 50%;
+      transition: .4s;
+    }
+
+    .toggle-input:checked + .toggle-slider {
+      background-color: var(--primary-color);
+    }
+
+    .toggle-input:checked + .toggle-slider:before {
+      transform: translateX(30px);
+    }
+
+    .toggle-icon {
+      font-size: 1.1rem;
+      color: var(--text-color);
+      transition: opacity 0.3s;
+    }
+
+    .sun-icon {
+      opacity: 1;
+    }
+
+    .moon-icon {
+      opacity: 0.5;
+    }
+
+    [data-theme="dark"] .sun-icon {
+      opacity: 0.5;
+    }
+
+    [data-theme="dark"] .moon-icon {
+      opacity: 1;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 20px;
+      background-color: var(--bg-color);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+      transition: background-color 0.4s ease;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    nav a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--primary-color);
+    }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 180px 20px 80px;
+      min-height: 100vh;
+    }
+
+    .hero img {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 4px solid var(--primary-color);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .hero img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(108, 99, 255, 0.3);
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      max-width: 600px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .buttons a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(108, 99, 255, 0.3);
+    }
+
+    /* Sections */
+    section {
+      padding: 80px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-align: center;
+      color: var(--primary-color);
+    }
+
+    /* About */
+    .about p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto 30px;
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .skill-item {
+      background: var(--secondary-color);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .skill-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .skill-item i {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+
+    /* Projects */
+    .projects {
+      background-color: var(--secondary-color);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .project {
+      background-color: var(--bg-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+      position: relative;
+    }
+
+    .project:hover {
+      transform: translateY(-10px);
+    }
+
+    .project img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .project-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 180px;
+      background: rgba(108, 99, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .project:hover .project-overlay {
+      opacity: 1;
+    }
+
+    .demo-btn {
+      padding: 10px 20px;
+      background: white;
+      color: var(--primary-color);
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .project-content {
+      padding: 20px;
+    }
+
+    .project h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .project p {
+      font-size: 0.95rem;
+      color: var(--text-color);
+    }
+
+    /* Contact */
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .contact-links a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .contact-links a:hover {
+      text-decoration: underline;
+      transform: translateX(5px);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: var(--secondary-color);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav { gap: 15px; }
+      .hero { padding: 150px 20px 60px; }
+      .hero h1 { font-size: 2rem; }
+      section { padding: 60px 20px; }
+      .theme-toggle {
+        top: 15px;
+        right: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Theme Toggle -->
+  <div class="theme-toggle">
+    <i class="fas fa-sun toggle-icon sun-icon"></i>
+    <label class="toggle-container">
+      <input type="checkbox" class="toggle-input">
+      <span class="toggle-slider"></span>
+    </label>
+    <i class="fas fa-moon toggle-icon moon-icon"></i>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <img src="https://via.placeholder.com/160" alt="Shaik Iliyas">
+    <h1>Hi, I'm Shaik Iliyas</h1>
+    <p>Web Designer & Developer focused on creating clean, accessible, and user-friendly experiences.</p>
+    <div class="buttons">
+      <a href="#projects">View Projects</a>
+      <a href="#contact">Contact Me</a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <h2>About Me</h2>
+    <p>Hello! I'm Shaik Iliyas, a passionate Web Designer focused on creating clean, minimal, and user-friendly websites. I enjoy transforming ideas into real, accessible web experiences. I work primarily with HTML, CSS, and JavaScript — and I love refining UI/UX with thoughtful design.</p>
+  </section>
+
+  <!-- Skills -->
+  <section class="skills" id="skills">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <i class="fab fa-html5"></i>
+        <p>HTML5</p>
+      </div>
+      <div class="skill-item">
+        <i class="fab fa-css3-alt"></i>
+        <p>CSS3</p>
+      </div>
+      <div class="skill-item">
+        <i class="fab fa-js"></i>
+        <p>JavaScript</p>
+      </div>
+      <div class="skill-item">
+        <i class="fab fa-figma"></i>
+        <p>Figma</p>
+      </div>
+      <div class="skill-item">
+        <i class="fas fa-mobile-alt"></i>
+        <p>Responsive Design</p>
+      </div>
+      <div class="skill-item">
+        <i class="fas fa-search"></i>
+        <p>SEO</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="projects" id="projects">
+    <h2>Projects</h2>
+    <div class="project-grid">
+      <div class="project">
+        <img src="https://via.placeholder.com/400x200" alt="Chat App UI">
+        <div class="project-overlay">
+          <a href="#" class="demo-btn">Live Demo</a>
+        </div>
+        <div class="project-content">
+          <h3>Chat App UI</h3>
+          <p>A WhatsApp-style chat app built with Node.js, Express, MongoDB, and EJS.</p>
+        </div>
+      </div>
+      <div class="project">
+        <img src="https://via.placeholder.com/400x200" alt="Portfolio Website">
+        <div class="project-overlay">
+          <a href="#" class="demo-btn">Live Demo</a>
+        </div>
+        <div class="project-content">
+          <h3>Portfolio Website</h3>
+          <p>A fully responsive personal portfolio website.</p>
+        </div>
+      </div>
+      <div class="project">
+        <img src="https://via.placeholder.com/400x200" alt="Landing Page">
+        <div class="project-overlay">
+          <a href="#" class="demo-btn">Live Demo</a>
+        </div>
+        <div class="project-content">
+          <h3>Landing Page</h3>
+          <p>A clean, minimal landing page design built with HTML/CSS.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact">
+    <h2>Contact Me</h2>
+    <div class="contact-links">
+      <a href="mailto:shaik.iliyascodes@gmail.com">
+        <i class="fas fa-envelope"></i> shaik.iliyascodes@gmail.com
+      </a>
+      <a href="https://github.com/shaikiliyascodes">
+        <i class="fab fa-github"></i> github.com/shaikiliyascodes
+      </a>
+      <a href="#">
+        <i class="fab fa-linkedin"></i> linkedin.com/in/shaikiliyascodes
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Shaik Iliyas. All rights reserved.
+  </footer>
+
+  <script>
+    // Theme Toggle with Sliding Button
+    const toggleInput = document.querySelector('.toggle-input');
+    const sunIcon = document.querySelector('.sun-icon');
+    const moonIcon = document.querySelector('.moon-icon');
+    const currentTheme = localStorage.getItem('theme');
+
+    // Initialize theme
+    if (currentTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      toggleInput.checked = true;
+      sunIcon.style.opacity = '0.5';
+      moonIcon.style.opacity = '1';
+    } else {
+      sunIcon.style.opacity = '1';
+      moonIcon.style.opacity = '0.5';
+    }
+
+    // Toggle theme on click
+    toggleInput.addEventListener('change', () => {
+      if (toggleInput.checked) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        sunIcon.style.opacity = '0.5';
+        moonIcon.style.opacity = '1';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        sunIcon.style.opacity = '1';
+        moonIcon.style.opacity = '0.5';
+      }
+    });
+
+    // Smooth scrolling for navbar links
+    document.querySelectorAll('nav a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>
